@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 export default function Telemetry() {
   const [activeNode, setActiveNode] = useState(0);
   const [pulseCount, setPulseCount] = useState(0);
   const [systemPhase, setSystemPhase] = useState("SCANNING");
 
-  const phases = ["SCANNING", "ANALYZING", "PROCESSING", "SYNCING", "UPDATING"];
+  const phases = useMemo(() => ["SCANNING", "ANALYZING", "PROCESSING", "SYNCING", "UPDATING"], []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,7 +18,7 @@ export default function Telemetry() {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [phases]);
 
   return (
     <motion.div 

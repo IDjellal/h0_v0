@@ -22,7 +22,6 @@ interface Project {
 }
 
 export default function InitiationPage() {
-  const [currentStep, setCurrentStep] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [steps, setSteps] = useState<InitiationStep[]>([
     {

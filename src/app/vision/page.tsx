@@ -4,6 +4,14 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/navigation/Navigation";
 import { useEffect, useRef } from "react";
 
+// Add this interface near the top of the file
+interface Particle {
+  x: number;
+  y: number;
+  speedX: number;
+  speedY: number;
+}
+
 // Fonction pour créer l'animation des particules
 const createParticleAnimation = (canvas: HTMLCanvasElement, startColor: string, endColor: string) => {
   const ctx = canvas.getContext('2d');
@@ -12,7 +20,7 @@ const createParticleAnimation = (canvas: HTMLCanvasElement, startColor: string, 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const particles: any[] = [];
+  const particles: Particle[] = [];
   const particleCount = 50;
   const connectionDistance = 100;
   const particleSize = 2;
@@ -159,7 +167,7 @@ export default function Vision() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Transformez votre vision du futur en stratégie d'investissement optimisée grâce à notre intelligence quantique
+              Transformez votre vision du futur en stratégie d&apos;investissement optimisée grâce à notre intelligence quantique
             </motion.p>
           </div>
         </motion.section>
@@ -173,7 +181,9 @@ export default function Vision() {
             >
               {/* Canvas pour les particules */}
               <canvas
-                ref={el => canvasRefs.current[index] = el}
+                ref={(el: HTMLCanvasElement | null) => {
+                  canvasRefs.current[index] = el;
+                }}
                 className="absolute inset-0 z-0"
               />
 
@@ -238,7 +248,7 @@ export default function Vision() {
               COMMENCEZ VOTRE VOYAGE
             </h2>
             <p className="text-zinc-500 tracking-wider mb-12 max-w-2xl mx-auto">
-              Découvrez comment votre vision unique peut façonner l'avenir de vos investissements
+              Découvrez comment votre vision unique peut façonner l&apos;avenir de vos investissements
             </p>
             <motion.button
               className="px-8 py-3 border border-zinc-800/50 bg-black/20 backdrop-blur-sm text-zinc-400 text-sm tracking-[0.2em] hover:text-zinc-200 transition-colors"

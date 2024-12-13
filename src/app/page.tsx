@@ -119,7 +119,7 @@ export default function Home() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Découvrez comment votre vision peut façonner l'avenir de l'investissement
+            Découvrez comment votre vision peut façonner l&apos;avenir de l&apos;investissement
           </motion.p>
           <Link href="/initiation">
             <motion.button

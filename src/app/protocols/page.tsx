@@ -60,7 +60,7 @@ export default function Protocols() {
               PROTOCOLS
             </h1>
             <p className="text-zinc-500 tracking-wider max-w-2xl">
-              Suite d'algorithmes quantiques interconnectés pour une optimisation maximale de vos investissements
+              Suite d&apos;algorithmes quantiques interconnectés pour une optimisation maximale de vos investissements
             </p>
           </motion.div>
 
