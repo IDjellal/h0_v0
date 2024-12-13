@@ -1,101 +1,137 @@
-import Image from "next/image";
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import Navigation from "@/components/navigation/Navigation";
+import { useRef } from "react";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const containerRef = useRef(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Transformations pour l'effet d'entrée
+  const gridScale = useTransform(scrollYProgress, [0, 0.5], [1, 25]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.1, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const backgroundScale = useTransform(scrollYProgress, [0.2, 0.8], [1, 1.5]);
+  const gradientOpacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.3, 1, 0]);
+
+
+  return (
+    <main className="min-h-screen bg-[#030303] text-white" ref={containerRef}>
+      <Navigation />
+
+      {/* Hero Section avec effet de transition */}
+      <section className="h-screen flex items-center justify-center sticky overflow-hidden  top-0">
+        {/* Background Effects */}
+        <motion.div 
+          className="absolute inset-0"
+          style={{ scale: backgroundScale }}
+        >
+          {/* Grid Pattern */}
+          <motion.div 
+            className="absolute inset-0"
+            style={{ 
+              opacity: gridOpacity,
+              scale: gridScale,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <div className="h-full w-full" 
+                 style={{ 
+                   backgroundImage: 'linear-gradient(to right, #00ff9d 1px, transparent 1px), linear-gradient(to bottom, #00ff9d 1px, transparent 1px)',
+                   backgroundSize: '40px 40px'
+                 }} 
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </motion.div>
+          
+          {/* Radial Gradients */}
+          <motion.div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 30% 30%, rgba(0,255,157,0.15) 0%, transparent 60%)',
+              opacity: gradientOpacity,
+              scale: backgroundScale
+            }}
+          />
+          <motion.div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 70% 70%, rgba(0,136,255,0.1) 0%, transparent 60%)',
+              opacity: gradientOpacity,
+              scale: backgroundScale
+            }}
+          />
+        </motion.div>
+
+        {/* Contenu Hero */}
+        <motion.div 
+          className="text-center z-10 relative"
+          style={{ opacity: contentOpacity }}
+        >
+          <h1 className="text-[12rem] font-light tracking-[0.2em] text-zinc-300 mb-20">
+            HORUS
+          </h1>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
+          style={{ opacity: contentOpacity }}
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="w-[1px] h-12 bg-gradient-to-b from-zinc-500 to-transparent mx-auto" />
+        </motion.div>
+      </section>
+
+      {/* Transition Section */}
+      <motion.div 
+        className="h-screen bg-[#030303]"
+        style={{
+          opacity: useTransform(scrollYProgress, [0.4, 0.6], [0, 1])
+        }}
+      />
+
+
+      {/* Section Contact/CTA */}
+      <motion.section 
+        className="relative z-10 min-h-screen bg-[#030303] py-32 px-8 flex items-center"
+        style={{
+          opacity: useTransform(scrollYProgress, [0.8, 1], [0, 1])
+        }}
+      >
+        <div className="max-w-screen-xl mx-auto text-center">
+          <motion.h2 
+            className="text-4xl font-light tracking-[0.2em] text-zinc-300 mb-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
-            Read our docs
-          </a>
+            REJOIGNEZ LE FUTUR
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-zinc-500 tracking-wider mb-12 max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Découvrez comment votre vision peut façonner l'avenir de l'investissement
+          </motion.p>
+          <Link href="/initiation">
+            <motion.button
+              className="px-8 py-3 border border-zinc-800/50 bg-black/20 backdrop-blur-sm text-zinc-400 text-sm tracking-[0.2em] hover:text-zinc-200 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              COMMENCER MAINTENANT
+            </motion.button>
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </motion.section>
+    </main>
   );
 }
